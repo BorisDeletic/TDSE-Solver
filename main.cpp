@@ -1,18 +1,17 @@
 // time dependent schrodinger equation
 #include <iostream>
 #include <stdio.h>
-#include <math.h>       /* exp */
+#include <math.h>     
 #include <complex>
 #include <cmath>
 #include <vector>
 #include "matrix.h"
 #include "cn_solver.h"
 
-#define N 64
+#define N 128
 
 
 using namespace std;
-using namespace std::complex_literals;
 
 double squared(int x);
 double gaussian(int x);
@@ -27,7 +26,6 @@ double gaussian(int x) {
 }
 
 
-// 
 vector<double> normalise(vector<complex<double> > &phi) {
 	vector<double> normalised(N);
 	for (int i=0; i < N; i++) {
@@ -57,11 +55,14 @@ void initialise(vector<double> &phi, double (*f)(int)) {
 	//b.c.
 }
 
+
+
 int main() {
 	vector<complex<double> > phi(N);
 	vector<double> V(N);
 	initialise(phi, gaussian);
 	initialise(V, squared);
+	
 	FILE * fp;
 	FILE * fp2;
 	fp = fopen ("complex.data","w");
@@ -77,6 +78,9 @@ int main() {
 	for (int i=0; i<N; i++) {
 		fprintf(fp2, "%d %.3e\n", i, normd[i]);
 	}
+	
+	fclose(fp);
+	fclose(fp2);
 	
 }
 

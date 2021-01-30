@@ -1,38 +1,52 @@
-// crout reduction for tridiagonal matrix
-//https://en.wikipedia.org/wiki/Crout_matrix_decomposition
+// tridiagonal matrix solver
+//https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
+
+#include <vector>
+#include <iostream>
+#include <complex>
+#include <cmath>
+#include <cassert>
 
 
-// A is tridiagonal input matrix
-// L is output for lower triangluar matrix
-// U is output for upper triangular
-// n x n matrix input
-void crout(double** A, double** L, double** U, int n) {
-	int i,j,k;
-	double sum = 0;
+using namespace std;
+// a is lower / upper diagonal vector as matrix is symmetrix. real, only (n-1)
+// b is diagonal. complex
+// d is output vector
+vector<complex<double>> tridiag_solve(vector<double> a, vector<complex<double>> b, vector<complex<double>> d) {
+	assert(b.size() == d.size());
+	assert(a.size() == d.size() - 1);
+	int n = d.size();
+	vector<complex<double>> x(n); //output vec
 	
-	for (i = 0; i < n; i++) {
-		U[i][i] = 1;
+	for (int j=1; j < n; j++) {
+		complex<double> w = a[j-1] / b[j-1];
+		b[j] = b[j] - w * a[j-1];
+		d[j] = d[j] - w * d[j-1];
 	}
-
-	for (j = 0; j < n; j++) {
-		for (i = j; i < n; i++) {
-			sum = 0;
-			for (k = 0; k < j; k++) {
-				sum = sum + L[i][k] * U[k][j];	
-			}
-			L[i][j] = A[i][j] - sum;
-		}
-
-		for (i = j; i < n; i++) {
-			sum = 0;
-			for(k = 0; k < j; k++) {
-				sum = sum + L[j][k] * U[k][i];
-			}
-			if (L[j][j] == 0) {
-				// determinant 0
-				exit(EXIT_FAILURE);
-			}
-			U[j][i] = (A[j][i] - sum) / L[j][j];
-		}
+	
+	x[n-1] = d[n-1] / b[n-1];
+	for (int j=n-2; j >= 0; j--) {
+		x[j] = (d[j] - a[j] * x[j+1]) / b[j];
 	}
+	
+	return x;
+}
+
+
+int main() {
+	vector<double> a(1);
+	vector<complex<double>> b(2);
+	vector<complex<double>> d(2);
+
+	a[0] = 1.0;
+	b[0] = {1.0, 1.0};
+	b[1] = {1.0, -1.0};
+	d[0] = {0.0, 2.0};
+	d[1] = {1.0, 1.0};
+		
+	vector<complex<double>> x = tridiag_solve(a, b, d);
+	
+	cout << "hello world" << endl;
+	cout << x[0] << endl;
+	cout << x[1];
 }

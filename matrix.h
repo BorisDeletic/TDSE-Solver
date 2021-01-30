@@ -1,6 +1,6 @@
 #ifndef MATRIX_H 
 #define MATRIX_H
 
-void crout(double** A, double** L, double** U, int n);
+vector<complex<double>> tridiag_solve(vector<double> a, vector<complex<double>> b, vector<complex<double>> d);
 
 #endif
