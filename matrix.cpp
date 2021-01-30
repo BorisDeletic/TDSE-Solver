@@ -1,14 +1,12 @@
 // tridiagonal matrix solver
 //https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
 
-#include <vector>
 #include <iostream>
-#include <complex>
 #include <cmath>
 #include <cassert>
+#include "matrix.h"
+#include "cn_solver.h"
 
-
-using namespace std;
 // a is lower / upper diagonal vector as matrix is symmetrix. real, only (n-1)
 // b is diagonal. complex
 // d is output vector
@@ -33,7 +31,7 @@ vector<complex<double>> tridiag_solve(vector<double> a, vector<complex<double>> 
 }
 
 
-int main() {
+void test_ex() {
 	vector<double> a(1);
 	vector<complex<double>> b(2);
 	vector<complex<double>> d(2);
