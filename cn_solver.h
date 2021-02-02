@@ -1,11 +1,11 @@
 #ifndef CN_SOLVER_H
 #define CN_SOLVER_H
 
-const double dt = 5;
+const double dt = 10;
 const double dx = 0.1;
 
-#define NX 1024
-#define NT 1024
+#define NX 10000
+#define NT 300
 
 vector<complex<double>> step(vector<complex<double>> &phi, double (*V)(int));
 void run(vector<complex<double>> &phi, double (*V)(int));
